@@ -10,6 +10,7 @@ export const findAllPosts = async () => {
 export const createNewPost = async (post) => {
   const newPost = new PostMessage(post);
   await newPost.save();
+  return newPost;
 };
 
 export const findAndUpdatePost = async (id, post) => {

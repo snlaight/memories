@@ -1,7 +1,5 @@
 import express from "express";
 
-import PostMessage from "../models/post-message.js";
-
 import {
   findAllPosts,
   createNewPost,
