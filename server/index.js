@@ -3,7 +3,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import router from "./routes/posts.js";
+import postRouter from "./routes/posts.js";
+import userRouter from "./routes/user.js";
 
 const app = express();
 dotenv.config();
@@ -12,8 +13,8 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-app.use("/posts", router);
-
+app.use("/posts", postRouter);
+app.use("/user", userRouter);
 const PORT = process.env.PORT || 3001;
 
 mongoose

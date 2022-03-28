@@ -9,13 +9,12 @@ import { createPost, updatePost } from "../../redux/posts/posts.actions";
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
-
+  const user = JSON.parse(localStorage.getItem("profile"));
   const selectedPost = useSelector((state) =>
     currentId ? state.posts.find((post) => post._id === currentId) : null
   );
@@ -29,8 +28,10 @@ const Form = ({ currentId, setCurrentId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     currentId
-      ? dispatch(updatePost(currentId, postData))
-      : dispatch(createPost(postData));
+      ? dispatch(
+          updatePost(currentId, { ...postData, name: user?.result?.name })
+        )
+      : dispatch(createPost({ ...postData, name: user?.result?.name }));
     clear();
   };
 
@@ -42,13 +43,23 @@ const Form = ({ currentId, setCurrentId }) => {
   const clear = () => {
     setCurrentId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
   };
+
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          {" "}
+          Please sign in to create your own memories and like other's memories.
+        </Typography>
+      </Paper>
+    );
+  }
   return (
     <Paper className={classes.paper}>
       <form
@@ -60,14 +71,7 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Memory.
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={handleChange}
-        />
+
         <TextField
           name="title"
           variant="outlined"
