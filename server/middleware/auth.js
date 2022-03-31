@@ -7,18 +7,17 @@ import jwt from "jsonwebtoken";
  * @param next - The next middleware function.
  */
 const auth = async (req, res, next) => {
+  console.log(req.headers.authorization);
   try {
-    console.log(req.headers);
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization;
     const isCustomAuth = token.length < 500;
     let decodedData;
     if (token && isCustomAuth) {
       decodedData = jwt.verify(token, "supersecrettest");
-
-      req.userId = decodedData?.id;
+      req.userId = decodedData.id;
     } else {
       decodedData = jwt.decode(token);
-      req.userId = decodedData?.sub;
+      req.userId = decodedData.sub;
     }
     next();
   } catch (error) {

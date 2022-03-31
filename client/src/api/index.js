@@ -2,14 +2,14 @@ import axios from "axios";
 
 const API = axios.create({ baseUrl: "http://localhost:3001" });
 
-// API.interceptors.request.use((req) => {
-//   if (localStorage.getItem("profile")) {
-//     req.headers.Authorization = `Bearer ${JSON.parse(
-//       localStorage.getItem("profile").token
-//     )}`;
-//   }
-//   return req;
-// });
+API.interceptors.request.use((req) => {
+  const token = JSON.parse(localStorage.getItem("profile")).token;
+  console.log(token);
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `${token.toString()}`;
+  }
+  return req;
+});
 
 const postAPI = "/posts";
 const userAPI = "/user";

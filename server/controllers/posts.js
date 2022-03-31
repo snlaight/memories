@@ -79,7 +79,7 @@ export const likePost = async (req, res) => {
   if (!req.userId) return res.json({ message: " Not authenticated" });
   if (!id) return res.status(404).send("No post with that ID exists");
 
-  const updatedPost = await findAndLikePost(id);
+  const updatedPost = await findAndLikePost(id, req.userId);
 
   res.json(updatedPost);
 };

@@ -53,13 +53,13 @@ export const findAndDeletePost = async (id) => {
  * @param id - The id of the post to like.
  * @returns The updated post.
  */
-export const findAndLikePost = async (id) => {
+export const findAndLikePost = async (id, user) => {
   const post = await PostMessage.findById(id);
 
   const index = post.likes.findIndex((userId) => userId === String(req.userId));
 
   if (index === -1) {
-    post.likes.push(req.userId);
+    post.likes.push(user);
   } else {
     post.likes = post.likes.filter((userId) => userId !== String(req.userId));
   }
